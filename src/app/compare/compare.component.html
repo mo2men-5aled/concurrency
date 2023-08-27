@@ -50,6 +50,7 @@
                 style="width: 100%; border-radius: 1.5rem"
               />
             </div>
+
             <div class="col-9">
               <select
                 class="menu-item"
@@ -58,10 +59,14 @@
                 [(ngModel)]="fromSelectedCountry"
                 (ngModelChange)="updateFromFlagImage()"
               >
-                <option>Select Currency</option>
-                <option *ngFor="let item of fetchedData" fromISO="item">
-                  <!-- set icon along side with  -->
-                  {{ item }}
+                <option value="" selected>Select an option</option>
+
+                <option
+                  *ngFor="let item of data"
+                  fromISO="item"
+                  value="{{ item.code }}"
+                >
+                  {{ item.name }}
                 </option>
               </select>
             </div>
@@ -105,7 +110,6 @@
                     src="{{ target1ImagePath }}"
                     alt=""
                     style="width: 100%; border-radius: 1.5rem"
-                    (error)="handleImageError($event)"
                   />
                 </div>
                 <div class="col-9">
@@ -116,10 +120,14 @@
                     [(ngModel)]="target1SelectedCountry"
                     (ngModelChange)="updateTarget1Image()"
                   >
-                    <option>Select Currency</option>
-                    <option *ngFor="let item of fetchedData" toISO="item">
-                      <!-- set icon along side with  -->
-                      {{ item }}
+                    <option value="" selected>Select an option</option>
+
+                    <option
+                      *ngFor="let item of data"
+                      fromISO="item"
+                      value="{{ item.code }}"
+                    >
+                      {{ item.name }}
                     </option>
                   </select>
                 </div>
@@ -133,7 +141,7 @@
               type="number"
               aria-label=".form-control-lg example"
               placeholder="Amount"
-              [value]="isTrue ? apiResponse : toValue"
+              [value]="target1value"
               [disabled]="isDisabled"
             />
           </div>
@@ -173,7 +181,6 @@
                     src="{{ target2ImagePath }}"
                     alt=""
                     style="width: 100%; border-radius: 1.5rem"
-                    (error)="handleImageError($event)"
                   />
                 </div>
                 <div class="col-9">
@@ -184,10 +191,14 @@
                     [(ngModel)]="target2SelectedCountry"
                     (ngModelChange)="updateTarget2Image()"
                   >
-                    <option>Select Currency</option>
-                    <option *ngFor="let item of fetchedData" toISO="item">
-                      <!-- set icon along side with  -->
-                      {{ item }}
+                    <option value="" selected>Select an option</option>
+
+                    <option
+                      *ngFor="let item of data"
+                      fromISO="item"
+                      value="{{ item.code }}"
+                    >
+                      {{ item.name }}
                     </option>
                   </select>
                 </div>
@@ -201,7 +212,7 @@
               type="number"
               aria-label=".form-control-lg example"
               placeholder="Amount"
-              [value]="isTrue ? apiResponse : toValue"
+              [value]="target2value"
               [disabled]="isDisabled"
             />
           </div>

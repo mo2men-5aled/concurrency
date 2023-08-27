@@ -28,8 +28,6 @@ export class ConvertComponent {
   toflagImagePath: string = '';
   fromflagImagePath: string = '';
 
-  placeholderImagePath = 'assets/flags/placeholder.png';
-
   constructor(
     private dataService: DataService,
     private formBuilder: FormBuilder,
@@ -73,7 +71,6 @@ export class ConvertComponent {
     } else {
       this.fromflagImagePath = 'assets/flags/placeholder.png';
     }
-    console.log(this.toflagImagePath);
   }
   updateToFlagImage() {
     const image = this.data.find((item: any) => {
@@ -85,7 +82,6 @@ export class ConvertComponent {
     } else {
       this.toflagImagePath = 'assets/flags/placeholder.png';
     }
-    console.log(this.toflagImagePath);
   }
 
   ngOnInit() {
@@ -95,7 +91,6 @@ export class ConvertComponent {
     this.dataService.fetchData().subscribe(
       (data: any) => {
         this.data = data; // Store the response in the variable
-        console.log(data);
       },
       (error) => {
         console.error('Error fetching data:', error);

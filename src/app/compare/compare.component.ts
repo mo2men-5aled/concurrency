@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../data.service';
-
 import { FormBuilder, FormGroup } from '@angular/forms';
-
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -11,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./compare.component.css'],
 })
 export class CompareComponent {
-  fetchedData: any; // You can define the type of your data here
+  data: any; // You can define the type of your data here
 
   isTrue: boolean = true;
   isDisabled: boolean = true;
@@ -28,11 +26,12 @@ export class CompareComponent {
   target2SelectedCountry: string = '';
   fromSelectedCountry: string = '';
 
-  target1ImagePath: string = '';
-  target2ImagePath: string = '';
-  fromflagImagePath: string = '';
+  target1ImagePath: string = 'assets/flags/placeholder.png';
+  target2ImagePath: string = 'assets/flags/placeholder.png';
+  fromflagImagePath: string = 'assets/flags/placeholder.png';
 
-  placeholderImagePath = 'assets/flags/placeholder.png';
+  target1value: number = 0;
+  target2value: number = 0;
 
   constructor(
     private dataService: DataService,
@@ -52,59 +51,76 @@ export class CompareComponent {
     event.preventDefault();
     event.stopPropagation();
 
-    const formData = this.form.value;
+    // Get the form data
+    const formData = this.form.getRawValue();
 
-    this.fromValue = this.conversion_rates[formData.fromISO];
-    this.toValue = this.conversion_rates[formData.toISO];
+    // Construct the request body
+    const requestBody = {
+      base_code: formData.fromISO,
+      target_codes: [
+        formData.target1SelectedCountry,
+        formData.target2SelectedCountry,
+      ],
+    };
+    // Make the API call
+    const response = this.http.post(
+      'https://concurrency-api.onrender.com/api/v1/currencies/comparison',
+      requestBody
+    );
+
+    // Subscribe to the response observable to get the API response
+    response.subscribe((data: any) => {
+      this.target1value =
+        data.conversion_rates[formData.target1SelectedCountry] *
+        formData.amount;
+      this.target2value =
+        data.conversion_rates[formData.target2SelectedCountry] *
+        formData.amount;
+    });
   }
 
   updateFromFlagImage() {
-    if (this.fromSelectedCountry) {
-      this.fromflagImagePath = `assets/flags/${this.fromSelectedCountry}.png`;
+    const image = this.data.find((item: any) => {
+      return item.code === this.fromSelectedCountry;
+    });
+
+    if (image) {
+      this.fromflagImagePath = image.icon_url;
     } else {
       this.fromflagImagePath = 'assets/flags/placeholder.png';
     }
   }
+
   updateTarget1Image() {
-    // if image not found error 404 return placeholder image
-    if (this.target1SelectedCountry) {
-      this.target1ImagePath = `assets/flags/${this.target1SelectedCountry}.png`;
+    const image = this.data.find((item: any) => {
+      return item.code === this.target1SelectedCountry;
+    });
+
+    if (image) {
+      this.target1ImagePath = image.icon_url;
     } else {
       this.target1ImagePath = 'assets/flags/placeholder.png';
     }
   }
   updateTarget2Image() {
-    // if image not found error 404 return placeholder image
-    if (this.target2SelectedCountry) {
-      this.target2ImagePath = `assets/flags/${this.target2SelectedCountry}.png`;
+    const image = this.data.find((item: any) => {
+      return item.code === this.target2SelectedCountry;
+    });
+    if (image) {
+      this.target2ImagePath = image.icon_url;
     } else {
       this.target2ImagePath = 'assets/flags/placeholder.png';
     }
-
-    console.log(this.target2ImagePath);
-    console.log(this.target2SelectedCountry);
-  }
-
-  handleImageError(event: any) {
-    event.target.src = this.placeholderImagePath;
   }
 
   ngOnInit() {
-    this.updateFromFlagImage();
-    this.updateTarget1Image();
-    this.updateTarget2Image();
-
     this.dataService.fetchData().subscribe(
       (data: any) => {
-        this.fetchedData = Object.keys(data.conversion_rates);
-
-        this.conversion_rates = data.conversion_rates; // Store the response in the variable
-        console.log(data);
+        this.data = data; // Store the response in the variable
       },
       (error) => {
         console.error('Error fetching data:', error);
       }
     );
-    console.log(this.conversion_rates);
   }
 }
