@@ -8,6 +8,8 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   fetchData() {
-    return this.http.get('http://localhost:8099/api/v1/currencies');
+    return this.http.get(
+      'https://concurrency-api.onrender.com/api/v1/currencies'
+    );
   }
 }

@@ -1,0 +1,228 @@
+<form class="form-content" [formGroup]="form" (ngSubmit)="submitForm($event)">
+  <div style="margin-bottom: 2rem">
+    <div class="row">
+      <div class="col-4">
+        <label for="exampleFormControlInput1" class="form-label field-labels"
+          >Amount</label
+        >
+        <input
+          style="width: 100%; height: 5rem; border-radius: 2.2rem"
+          class="form-control form-control-lg"
+          type="number"
+          placeholder="Amount"
+          aria-label=".form-control-lg example"
+          id="amount"
+          formControlName="amount"
+          [value]="isTrue ? null : fromValue"
+          [disabled]="isDisabled"
+        />
+      </div>
+      <div class="col-8">
+        <label for="exampleFormControlTextarea1" class="form-label field-labels"
+          >From</label
+        >
+
+        <div
+          style="
+            width: 100%;
+            height: 5rem;
+            border-radius: 2.2rem;
+            background-color: white;
+            padding: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <div
+            class="row"
+            style="
+              height: 5rem;
+              border-radius: 2.2rem;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <div class="col-3">
+              <img
+                src="{{ fromflagImagePath }}"
+                alt=""
+                style="width: 100%; border-radius: 1.5rem"
+              />
+            </div>
+            <div class="col-9">
+              <select
+                class="menu-item"
+                id="amount"
+                formControlName="fromISO"
+                [(ngModel)]="fromSelectedCountry"
+                (ngModelChange)="updateFromFlagImage()"
+              >
+                <option>Select Currency</option>
+                <option *ngFor="let item of fetchedData" fromISO="item">
+                  <!-- set icon along side with  -->
+                  {{ item }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        <div class="row" style="flex-direction: column">
+          <div style="margin-bottom: 1rem">
+            <label
+              for="exampleFormControlTextarea1"
+              class="form-label field-labels"
+              >Targeted Currency</label
+            >
+            <div
+              style="
+                width: 100%;
+                height: 5rem;
+                border-radius: 2.2rem;
+                background-color: white;
+                padding: 0.6rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <div
+                class="row"
+                style="
+                  height: 5rem;
+                  border-radius: 2.2rem;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <div class="col-3">
+                  <img
+                    src="{{ target1ImagePath }}"
+                    alt=""
+                    style="width: 100%; border-radius: 1.5rem"
+                    (error)="handleImageError($event)"
+                  />
+                </div>
+                <div class="col-9">
+                  <select
+                    class="menu-item"
+                    id="amount"
+                    formControlName="target1SelectedCountry"
+                    [(ngModel)]="target1SelectedCountry"
+                    (ngModelChange)="updateTarget1Image()"
+                  >
+                    <option>Select Currency</option>
+                    <option *ngFor="let item of fetchedData" toISO="item">
+                      <!-- set icon along side with  -->
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <input
+              style="width: 100%; height: 5rem; border-radius: 2.2rem"
+              class="form-control form-control-lg"
+              type="number"
+              aria-label=".form-control-lg example"
+              placeholder="Amount"
+              [value]="isTrue ? apiResponse : toValue"
+              [disabled]="isDisabled"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="row" style="flex-direction: column">
+          <div style="margin-bottom: 1rem">
+            <label
+              for="exampleFormControlTextarea1"
+              class="form-label field-labels"
+              >Targeted Currency</label
+            >
+            <div
+              style="
+                width: 100%;
+                height: 5rem;
+                border-radius: 2.2rem;
+                background-color: white;
+                padding: 0.6rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+              "
+            >
+              <div
+                class="row"
+                style="
+                  height: 5rem;
+                  border-radius: 2.2rem;
+                  align-items: center;
+                  justify-content: space-between;
+                "
+              >
+                <div class="col-3">
+                  <img
+                    src="{{ target2ImagePath }}"
+                    alt=""
+                    style="width: 100%; border-radius: 1.5rem"
+                    (error)="handleImageError($event)"
+                  />
+                </div>
+                <div class="col-9">
+                  <select
+                    class="menu-item"
+                    id="amount"
+                    formControlName="target2SelectedCountry"
+                    [(ngModel)]="target2SelectedCountry"
+                    (ngModelChange)="updateTarget2Image()"
+                  >
+                    <option>Select Currency</option>
+                    <option *ngFor="let item of fetchedData" toISO="item">
+                      <!-- set icon along side with  -->
+                      {{ item }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <input
+              style="width: 100%; height: 5rem; border-radius: 2.2rem"
+              class="form-control form-control-lg"
+              type="number"
+              aria-label=".form-control-lg example"
+              placeholder="Amount"
+              [value]="isTrue ? apiResponse : toValue"
+              [disabled]="isDisabled"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    style="
+      color: white;
+      width: 100%;
+      height: 5rem;
+      border-radius: 2.2rem;
+      margin-top: 2rem;
+      font-size: 1.76rem;
+      font-weight: 700;
+      background-color: #0e98d0;
+    "
+    class="btn"
+    type="submit"
+  >
+    Compare
+  </button>
+</form>
